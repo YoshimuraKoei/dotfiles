@@ -32,6 +32,7 @@
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     os_icon                 # os identifier
+    codespace               # GitHub Codespaces environment
     dir                     # current directory
     vcs                     # git status
     # prompt_char           # prompt symbol
@@ -216,18 +217,30 @@
   typeset -g POWERLEVEL9K_PROMPT_CHAR_LEFT_{LEFT,RIGHT}_WHITESPACE=
 
   ##################################[ dir: current directory ]##################################
-  # Default current directory color.
-  typeset -g POWERLEVEL9K_DIR_FOREGROUND=31
+  # Use a warm palette in Codespaces while preserving the local cool palette.
+  if [[ -n ${CODESPACES:-} ]]; then
+    typeset -g POWERLEVEL9K_DIR_FOREGROUND=173
+  else
+    typeset -g POWERLEVEL9K_DIR_FOREGROUND=31
+  fi
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
   typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
   # Replace removed segment suffixes with this symbol.
   typeset -g POWERLEVEL9K_SHORTEN_DELIMITER=
   # Color of the shortened directory segments.
-  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=103
+  if [[ -n ${CODESPACES:-} ]]; then
+    typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=174
+  else
+    typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=103
+  fi
   # Color of the anchor directory segments. Anchor segments are never shortened. The first
   # segment is always an anchor.
-  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=39
+  if [[ -n ${CODESPACES:-} ]]; then
+    typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=173
+  else
+    typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=39
+  fi
   # Display anchor directory segments in bold.
   typeset -g POWERLEVEL9K_DIR_ANCHOR_BOLD=true
   # Don't shorten directories that contain any of these files. They are anchors.
@@ -1667,6 +1680,16 @@
   # typeset -g POWERLEVEL9K_TIME_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # Custom prefix.
   # typeset -g POWERLEVEL9K_TIME_PREFIX='%250Fat '
+
+  # Make remote work visually distinct without changing error, warning, or VCS colors.
+  function prompt_codespace() {
+    [[ -n ${CODESPACES:-} ]] || return
+    p10k segment -b 240 -f 173 -i '☁' -t 'CODESPACE'
+  }
+
+  function instant_prompt_codespace() {
+    prompt_codespace
+  }
 
   # Example of a user-defined prompt segment. Function prompt_example will be called on every
   # prompt if `example` prompt segment is added to POWERLEVEL9K_LEFT_PROMPT_ELEMENTS or
