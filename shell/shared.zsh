@@ -1,6 +1,6 @@
 # Shared interactive shell settings for macOS and GitHub Codespaces.
 
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 export EDITOR="nvim"
 export VISUAL="nvim"
 

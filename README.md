@@ -9,6 +9,7 @@ YoshimuraKoei personal terminal and Neovim configuration for macOS and GitHub Co
 - zsh-abbr shortcuts: `gc`, `gp`, `gst`, `jl`
 - Powerlevel10k configuration
 - AstroNvim configuration
+- source-built `tree-sitter` CLI for compatibility with Codespaces
 
 Machine-specific paths, credentials, and application-only settings are intentionally excluded.
 
@@ -21,6 +22,7 @@ exec zsh -l
 ```
 
 The installer is safe to run again. Existing files that would be replaced by symlinks are moved to a timestamped directory under `~/.dotfiles-backup/`.
+The first Linux install compiles `tree-sitter-cli`, so it can take several minutes.
 
 For GitHub Codespaces, select this repository under **GitHub Settings → Codespaces → Dotfiles** and enable automatic installation. GitHub runs `install.sh` for each new Codespace.
 

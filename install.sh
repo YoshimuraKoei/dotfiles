@@ -42,14 +42,30 @@ install_linux_packages() {
   sudo apt-get update
   sudo apt-get install -y --no-install-recommends \
     bat \
+    build-essential \
     fd-find \
     fzf \
+    pkg-config \
     ripgrep \
     zsh
 
   mkdir -p "$HOME/.local/bin"
   [[ -x /usr/bin/batcat ]] && ln -sfn /usr/bin/batcat "$HOME/.local/bin/bat"
   [[ -x /usr/bin/fdfind ]] && ln -sfn /usr/bin/fdfind "$HOME/.local/bin/fd"
+}
+
+install_tree_sitter() {
+  [[ "$(uname -s)" == "Linux" ]] || return
+
+  if [[ -x "$HOME/.cargo/bin/tree-sitter" ]] && \
+    "$HOME/.cargo/bin/tree-sitter" --version >/dev/null 2>&1; then
+    return
+  fi
+
+  if [[ ! -x "$HOME/.cargo/bin/cargo" ]]; then
+    curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal
+  fi
+  "$HOME/.cargo/bin/cargo" install --locked tree-sitter-cli --version 0.27.0
 }
 
 install_eza() {
@@ -115,7 +131,7 @@ append_zsh_source() {
 }
 
 mkdir -p "$HOME/.local/bin" "$HOME/.local/share"
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 
 if [[ "$(uname -s)" == "Linux" ]] && command -v apt-get >/dev/null 2>&1; then
   install_linux_packages
@@ -123,6 +139,7 @@ fi
 
 install_eza
 install_neovim
+install_tree_sitter
 
 clone_if_missing https://github.com/romkatv/powerlevel10k.git "$HOME/.local/share/powerlevel10k"
 clone_if_missing https://github.com/olets/zsh-abbr.git "$HOME/.local/share/zsh-abbr"
