@@ -5,6 +5,7 @@ YoshimuraKoei personal terminal and Neovim configuration for macOS and GitHub Co
 ## Includes
 
 - shared zsh behavior and Ghostty key sequences
+- automatic terminal mouse-mode cleanup after dropped SSH/TUI sessions
 - `eza` as `ls`
 - zsh-abbr shortcuts: `gc`, `gp`, `gst`, `jl`
 - Powerlevel10k configuration

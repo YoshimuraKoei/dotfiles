@@ -4,6 +4,15 @@ export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# A remote TUI can disappear without restoring terminal mouse tracking when an
+# SSH connection drops. Disable those modes whenever zsh returns to its prompt.
+reset_terminal_mouse_tracking() {
+  [[ -o interactive && -t 1 ]] || return
+  printf '\e[?1000l\e[?1002l\e[?1003l\e[?1004l\e[?1005l\e[?1006l\e[?1015l' > /dev/tty
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd reset_terminal_mouse_tracking
+
 if (( $+commands[eza] )); then
   alias ls='eza --icons=auto'
   alias ll='eza --icons=auto --long --all --git'
