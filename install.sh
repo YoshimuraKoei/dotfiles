@@ -68,6 +68,17 @@ install_tree_sitter() {
   "$HOME/.cargo/bin/cargo" install --locked tree-sitter-cli --version 0.27.0
 }
 
+link_mason_tree_sitter() {
+  [[ "$(uname -s)" == "Linux" ]] || return
+
+  # AstroNvim prepends Mason's bin directory after startup. Keep its
+  # tree-sitter entry pointed at the locally compiled, glibc-compatible CLI.
+  mkdir -p "$HOME/.local/share/nvim/mason/bin"
+  ln -sfn \
+    "$HOME/.cargo/bin/tree-sitter" \
+    "$HOME/.local/share/nvim/mason/bin/tree-sitter"
+}
+
 install_eza() {
   command -v eza >/dev/null 2>&1 && return
 
@@ -140,6 +151,7 @@ fi
 install_eza
 install_neovim
 install_tree_sitter
+link_mason_tree_sitter
 
 clone_if_missing https://github.com/romkatv/powerlevel10k.git "$HOME/.local/share/powerlevel10k"
 clone_if_missing https://github.com/olets/zsh-abbr.git "$HOME/.local/share/zsh-abbr"
