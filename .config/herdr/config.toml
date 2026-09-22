@@ -1,0 +1,24 @@
+# Herdr 0.9.0: mouse-first setup for Ghostty.
+onboarding = false
+
+[terminal]
+default_shell = "/bin/zsh"
+shell_mode = "auto"
+new_cwd = "follow"
+
+[theme]
+name = "terminal"
+
+[ui]
+mouse_capture = true
+copy_on_select = true
+confirm_close = true
+
+[ui.toast]
+delivery = "herdr"
+
+[ui.sound]
+enabled = false
+
+[remote]
+manage_ssh_config = false

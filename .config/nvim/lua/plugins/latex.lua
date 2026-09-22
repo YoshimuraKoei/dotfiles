@@ -5,7 +5,7 @@ return {
     ft = { "tex" },
     init = function()
       vim.g.vimtex_compiler_method = "latexmk"
-      vim.g.vimtex_view_method = "skim"
+      if vim.fn.has "macunix" == 1 then vim.g.vimtex_view_method = "skim" end
     end,
   },
   {

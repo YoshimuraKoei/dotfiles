@@ -5,6 +5,8 @@ repo_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 
 bash -n "$repo_dir/install.sh"
 zsh -n "$repo_dir/shell/shared.zsh"
+zsh -n "$repo_dir/shell/macos.zsh"
+zsh -n "$repo_dir/.zshrc"
 
 if rg -n -i \
   '(api[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret|password[[:space:]]*=|private[_-]?key)' \

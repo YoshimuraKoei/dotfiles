@@ -7,6 +7,7 @@ BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 backup_path() {
   local target="$1"
   mkdir -p "$BACKUP_DIR"
+  chmod 700 "$HOME/.dotfiles-backup" "$BACKUP_DIR"
   mv "$target" "$BACKUP_DIR/"
 }
 
@@ -55,7 +56,7 @@ install_linux_packages() {
 }
 
 install_tree_sitter() {
-  [[ "$(uname -s)" == "Linux" ]] || return
+  [[ "$(uname -s)" == "Linux" ]] || return 0
 
   if [[ -x "$HOME/.cargo/bin/tree-sitter" ]] && \
     "$HOME/.cargo/bin/tree-sitter" --version >/dev/null 2>&1; then
@@ -69,7 +70,7 @@ install_tree_sitter() {
 }
 
 link_mason_tree_sitter() {
-  [[ "$(uname -s)" == "Linux" ]] || return
+  [[ "$(uname -s)" == "Linux" ]] || return 0
 
   # AstroNvim prepends Mason's bin directory after startup. Keep its
   # tree-sitter entry pointed at the locally compiled, glibc-compatible CLI.
@@ -110,7 +111,15 @@ install_eza() {
 
 install_neovim() {
   command -v nvim >/dev/null 2>&1 && return
-  [[ "$(uname -s)" == "Linux" ]] || return
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    if command -v brew >/dev/null 2>&1; then
+      brew install neovim
+      return
+    fi
+    printf 'Neovim is missing; install Homebrew or Neovim manually.\n' >&2
+    return 1
+  fi
+  [[ "$(uname -s)" == "Linux" ]] || return 0
 
   local arch
   case "$(uname -m)" in
@@ -159,7 +168,14 @@ git -C "$HOME/.local/share/zsh-abbr" submodule update --init --recursive --depth
 
 link_path "$DOTFILES_DIR" "$HOME/.dotfiles"
 link_path "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
-append_zsh_source
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  link_path "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
+  link_path "$DOTFILES_DIR/shell/p10k.zsh" "$HOME/.p10k.zsh"
+  link_path "$DOTFILES_DIR/.config/ghostty" "$HOME/.config/ghostty"
+  link_path "$DOTFILES_DIR/.config/herdr/config.toml" "$HOME/.config/herdr/config.toml"
+else
+  append_zsh_source
+fi
 
 if [[ -n "${CODESPACES:-}" ]] && [[ "$(getent passwd "$USER" | cut -d: -f7)" != "$(command -v zsh)" ]]; then
   sudo chsh -s "$(command -v zsh)" "$USER"

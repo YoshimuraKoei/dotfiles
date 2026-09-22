@@ -1,2 +1,5 @@
 .DS_Store
 *.log
+
+# Per-machine Ghostty paths and assets.
+.config/ghostty/local.config
