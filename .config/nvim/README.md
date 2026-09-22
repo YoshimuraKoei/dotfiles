@@ -1,34 +1,7 @@
-# AstroNvim Template
+# Neovim設定
 
-**NOTE:** This is for AstroNvim v5+
+AstroNvim v5以降を使うNeovim設定。設定本体はこのdotfilesリポジトリで管理する。
 
-A template for getting started with [AstroNvim](https://github.com/AstroNvim/AstroNvim)
+Macではルートの[README](../../README.md)に従って `install.sh` を実行する。既存の `~/.config/nvim` は `~/.dotfiles-backup/` に退避され、`~/.dotfiles/.config/nvim` へのシンボリックリンクに切り替わる。Codespacesでも同じNeovim設定をリンクする。
 
-## 🛠️ Installation
-
-#### Make a backup of your current nvim and shared folder
-
-```shell
-mv ~/.config/nvim ~/.config/nvim.bak
-mv ~/.local/share/nvim ~/.local/share/nvim.bak
-mv ~/.local/state/nvim ~/.local/state/nvim.bak
-mv ~/.cache/nvim ~/.cache/nvim.bak
-```
-
-#### Create a new user repository from this template
-
-Press the "Use this template" button above to create a new repository to store your user configuration.
-
-You can also just clone this repository directly if you do not want to track your user configuration in GitHub.
-
-#### Clone the repository
-
-```shell
-git clone https://github.com/<your_user>/<your_repository> ~/.config/nvim
-```
-
-#### Start Neovim
-
-```shell
-nvim
-```
+設定を変更するときは、このディレクトリ内のファイルを編集する。元のAstroNvimテンプレートを `~/.config/nvim` へ別途クローンする必要はない。
