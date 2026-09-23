@@ -1,8 +1,8 @@
-# Shared interactive shell settings for macOS and GitHub Codespaces.
+# Shared interactive shell settings for macOS, GitHub Codespaces, and Android.
 
 export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
-export EDITOR="nvim"
-export VISUAL="nvim"
+export EDITOR="${DOTFILES_EDITOR:-nvim}"
+export VISUAL="$EDITOR"
 
 # A remote TUI can disappear without restoring terminal mouse tracking when an
 # SSH connection drops. Disable those modes whenever zsh returns to its prompt.
@@ -21,11 +21,13 @@ if (( $+commands[eza] )); then
   fi
 fi
 
-# Match Ghostty Cmd+Arrow custom sequences to macOS-style movement.
-bindkey $'\e[1;9D' beginning-of-line
-bindkey $'\e[1;9C' end-of-line
-bindkey $'\e[1;9A' beginning-of-buffer-or-history
-bindkey $'\e[1;9B' end-of-buffer-or-history
+# Keep existing Ghostty key sequences on Macs and remote Codespaces.
+if [[ "${DOTFILES_GHOSTTY_KEYS:-1}" == 1 ]]; then
+  bindkey $'\e[1;9D' beginning-of-line
+  bindkey $'\e[1;9C' end-of-line
+  bindkey $'\e[1;9A' beginning-of-buffer-or-history
+  bindkey $'\e[1;9B' end-of-buffer-or-history
+fi
 
 ABBR_SET_EXPANSION_CURSOR=1
 typeset -ga ABBR_REGULAR_ABBREVIATION_GLOB_PREFIXES
@@ -49,10 +51,12 @@ if (( $+functions[abbr] )); then
   abbr add --session --force --quiet 'jl=uv run --with jupyterlab jupyter lab'
 fi
 
-if [[ -r "$HOME/.local/share/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
-  source "$HOME/.local/share/powerlevel10k/powerlevel10k.zsh-theme"
+if [[ "${DOTFILES_SKIP_POWERLEVEL10K:-0}" != 1 ]]; then
+  if [[ -r "$HOME/.local/share/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
+    source "$HOME/.local/share/powerlevel10k/powerlevel10k.zsh-theme"
+  fi
+  [[ -r "$HOME/.dotfiles/shell/p10k.zsh" ]] && source "$HOME/.dotfiles/shell/p10k.zsh"
 fi
-[[ -r "$HOME/.dotfiles/shell/p10k.zsh" ]] && source "$HOME/.dotfiles/shell/p10k.zsh"
 
 if [[ "${HERDR_ENV:-}" == "1" ]]; then
   unset NO_COLOR
