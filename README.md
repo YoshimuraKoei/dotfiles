@@ -1,6 +1,8 @@
 # dotfiles
 
-macOSのターミナル、Ghostty、Herdr、Neovimの設定をGitで管理する。zshの共通設定とNeovim設定はGitHub Codespacesでも使う。Android TerminalのDebian VMではzshの共通設定を使う。
+macOS・GitHub Codespaces・Android Terminalで開発環境を再現するための設定集。zsh、Neovim、Ghostty、Herdrの設定をGitで管理する。
+
+共通のシェル設定と環境ごとの設定を分け、複数の環境で同じ操作感を使えるようにしている。macOSではGhostty・Herdr・Neovimを組み合わせ、Codespacesでは共通のzsh設定とNeovim設定を、Android TerminalのDebian VMでは共通のzsh設定を使う。
 
 ## 管理対象
 
@@ -17,7 +19,7 @@ macOSのターミナル、Ghostty、Herdr、Neovimの設定をGitで管理する
 
 ## macOSでの導入
 
-先にGitHubへ認証し、Homebrewをインストールする。GhosttyとHerdrのアプリ本体は別途用意する。
+Homebrewをインストールする。GhosttyとHerdrのアプリ本体は別途用意する。
 
 ```bash
 git clone https://github.com/YoshimuraKoei/dotfiles.git ~/.dotfiles
@@ -30,13 +32,13 @@ exec zsh -l
 
 ## GitHub Codespacesでの導入
 
-GitHubの **Settings → Codespaces → Dotfiles** でこのリポジトリを選び、自動インストールを有効にする（設定済み）。新しいCodespaceの作成時にGitHubが自動で `install.sh` を実行する。
+GitHubの **Settings → Codespaces → Dotfiles** でこのリポジトリを選び、自動インストールを有効にする。新しいCodespaceの作成時にGitHubが自動で `install.sh` を実行する。
 
 Linux側の処理は必要なパッケージと互換性のある `tree-sitter` CLIを用意し、Neovim設定をリンクして、既存の `~/.zshrc` に共通zsh設定の読み込みを追加する。macOS専用の設定はリンクしない。
 
 ## Android Terminalでの導入（Debian ARM64）
 
-PixelのDebian VMでは `install-android.sh` を使う。既存の `install.sh` はCodespaces向けにNeovimとtree-sitterも導入するため、Androidでは実行しない。リポジトリを取得する前にGitを用意し、非公開リポジトリへアクセスできる状態にする。
+Android TerminalのDebian ARM64環境では `install-android.sh` を使う。既存の `install.sh` はCodespaces向けにNeovimとtree-sitterも導入するため、Androidでは実行しない。リポジトリを取得する前にGitを用意する。
 
 ```bash
 git clone https://github.com/YoshimuraKoei/dotfiles.git ~/.dotfiles
